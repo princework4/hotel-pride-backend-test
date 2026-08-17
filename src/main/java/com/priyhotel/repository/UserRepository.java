@@ -1,0 +1,20 @@
+package com.priyhotel.repository;
+
+import com.priyhotel.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByEmailOrContactNumber(String email, String contactNumber);
+
+    Optional<User> findByContactNumber(String contactNumber);
+
+    Optional<List<User>> findByName(String name);
+}

@@ -1,0 +1,73 @@
+package com.priyhotel.entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "room_types")
+public class RoomType {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String typeName;
+
+    @Column(nullable = true)
+    private Integer capacityGuest;
+
+    @Column(nullable = true)
+    private Integer maxCapacityGuest;
+
+    @Column(nullable = true)
+    private Double extraGuestPricePerNight;
+
+    @Column(nullable = true)
+    private Double pricePerNight;
+
+    @Column(nullable = true)
+    private Double offerDiscountPercentage;
+
+    @Column(nullable = true)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate offerStartDate;
+
+    @Column(nullable = true)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate offerEndDate;
+
+    @Column(nullable = true)
+    private String description;
+
+    @Column(nullable = true)
+    private Integer roomSizeInSquareFeet;
+
+    @ManyToMany
+    @JoinTable(
+            name = "room_type_amenities",
+            joinColumns = @JoinColumn(name = "room_type_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
+    private List<Amenity> amenities;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private List<Room> rooms;
+
+    @ManyToMany
+    @JoinTable(
+            name = "room_type_assets",
+            joinColumns = @JoinColumn(name = "room_type_id"),
+            inverseJoinColumns = @JoinColumn(name = "asset_id")
+    )
+    private List<Asset> assets;
+
+}

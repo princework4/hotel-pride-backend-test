@@ -1,36 +1,4 @@
 services:
-
-  mysql:
-    image: mysql:8.0
-    container_name: priyhotel-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
-      MYSQL_DATABASE: ${MYSQL_DB_NAME:-hotel_db}
-      # MySQL refuses to create a user called "root" here - keep this as appuser.
-      MYSQL_USER: ${MYSQL_USERNAME:-appuser}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --default-time-zone=+00:00
-      - --innodb-buffer-pool-size=256M
-    volumes:
-      - mysql-data:/var/lib/mysql
-    # Deliberately NOT published to the host: only the app container needs it.
-    # To connect a SQL client, use an SSH tunnel to the EC2 box, or temporarily
-    # uncomment the ports block below.
-    # ports:
-    #   - "127.0.0.1:3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
-      interval: 10s
-      timeout: 5s
-      retries: 12
-      start_period: 40s
-    networks:
-      - priyhotel
-
   app:
     build:
       context: .
@@ -38,17 +6,16 @@ services:
     image: priyhotel-app:latest
     container_name: priyhotel-app
     restart: unless-stopped
-    depends_on:
-      mysql:
-        condition: service_healthy
+
     environment:
       PORT: 8080
-      # "mysql" is the service name above - Docker's internal DNS resolves it.
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_DB_NAME: ${MYSQL_DB_NAME:-hotel_db}
-      MYSQL_USERNAME: ${MYSQL_USERNAME:-appuser}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+
+      # Aiven MySQL
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB_NAME: ${MYSQL_DB_NAME}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
       RAZORPAY_KEY: ${RAZORPAY_KEY}
       RAZORPAY_SECRET: ${RAZORPAY_SECRET}
@@ -59,22 +26,13 @@ services:
       SMTP_PASS: ${SMTP_PASS}
       SENDTO_EMAIL: ${SENDTO_EMAIL}
 
-      # Keeps the JVM inside the container's memory limit instead of assuming
-      # it owns the whole EC2 box.
       JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=70"
+
     ports:
       - "${APP_PORT:-8080}:8080"
+
     volumes:
-      # Named volume, so uploaded images survive rebuilds. On first start Docker
-      # seeds it from the uploads/ folder baked into the image.
       - uploads-data:/app/uploads
-    networks:
-      - priyhotel
 
 volumes:
-  mysql-data:
   uploads-data:
-
-networks:
-  priyhotel:
-    driver: bridge

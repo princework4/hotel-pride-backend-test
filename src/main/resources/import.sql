@@ -148,14 +148,14 @@ INSERT INTO assets (id, asset_thumb_url, asset_url, asset_type) VALUES ( 11, NUL
 
 ALTER TABLE assets ALTER COLUMN id RESTART WITH 12;
 
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (1, 1);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (2, 1);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (3, 1);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (4, 2);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (5, 2);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (6, 2);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (7, 2);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (8, 3);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (9, 3);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (10, 3);
--- INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (11, 3);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (1, 1);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (2, 1);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (3, 1);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (4, 2);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (5, 2);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (6, 2);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (7, 2);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (8, 3);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (9, 3);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (10, 3);
+INSERT INTO room_type_assets(asset_id, room_type_id) VALUES (11, 3);
